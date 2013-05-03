@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<xml>
+  <class_name>XslTransformTestCodeRendererTest</class_name>
+  <class_instance_name>xslTransformTestCodeRendererTestTest</class_instance_name>
+  <test_class_name>XslTransformTestCodeRendererTestTest</test_class_name>
+  <namespace>Skelgen\Renderer</namespace>
+  <constructor_injections>
+    <injection has_hint="1">
+      <name>newChild</name>
+      <type_hint>DOMNode</type_hint>
+    </injection>
+    <injection has_hint="1">
+      <name>source</name>
+      <type_hint>DOMNode</type_hint>
+    </injection>
+    <injection has_hint="0">
+      <name>name</name>
+    </injection>
+  </constructor_injections>
+</xml>
