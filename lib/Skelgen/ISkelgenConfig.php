@@ -1,16 +1,22 @@
 <?php
 namespace Skelgen;
 
-use JESkelgen\Config\ItjbSkelgenConfig ;
-use JESkelgen\Config\ProjectConfig;
 use Skelgen\File\ExistingFile;
+use Skelgen\Project\IProjectConfig;
 
 interface ISkelgenConfig {
 
 
     /**
+     * @param ExistingFile $filePath
+     * @return boolean
+     */
+    public function isProject( ExistingFile $filePath );
+
+
+    /**
      * @param \ReflectionClass $classToTest
-     * @return ProjectConfig
+     * @return IProjectConfig
      */
     public function createProjectConfig( \ReflectionClass $classToTest );
 
@@ -39,11 +45,4 @@ interface ISkelgenConfig {
      * @return \Skelgen\File\ExistingDirectory
      */
     public function getBaseFolder( ExistingFile $testFileLocation );
-
-
-    /**
-     * @param $filePath
-     * @return boolean
-     */
-    public function isProject( $filePath );
 }

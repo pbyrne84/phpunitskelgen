@@ -30,4 +30,9 @@ class ExistingFile extends \SplFileInfo{
     }
 
 
+    public function __toString() {
+        return $this->getRealPath();
+    }
+
+
 }
