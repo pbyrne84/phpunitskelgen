@@ -89,8 +89,6 @@ class XslTransformTestCodeRenderer implements TestCoderRenderer {
      */
     private function transForm( \Skelgen\Test\TestConfig $config ) {
         $domXslTransformer = new DomXslTransformer();
-        echo $this->document->saveXML();
-
         return $domXslTransformer->transformDomDocument( $config->getTemplateLocation(), $this->document );
     }
 
