@@ -3,6 +3,7 @@
 namespace Skelgen\TestCase;
 
 
+use JePhpUnitBootStrap\RemoteCall\PhpStormFileOpener;
 use Skelgen\ISkelgenConfig;
 use Skelgen\Project\IProjectConfig;
 use Skelgen\Reflection\ConstructorDependencyGenerator;
@@ -11,8 +12,12 @@ use Skelgen\Reflection\CustomReflectionClass;
 class TestCaseWriter {
     const CLASS_NAME = __CLASS__;
 
+    /** @var \JePhpUnitBootStrap\RemoteCall\PhpStormFileOpener */
+    private $phpStormFileOpener;
 
-    function __construct() {
+
+    function __construct( PhpStormFileOpener $phpStormFileOpener) {
+        $this->phpStormFileOpener = $phpStormFileOpener;
     }
 
 
@@ -36,6 +41,8 @@ class TestCaseWriter {
         $renderCode = $xslTransformTestCodeRenderer->renderCode( $testConfig );
         $this->generateRequiredSubfolders( $testConfig->getTestOutputFilePath() );
         file_put_contents( $testConfig->getTestOutputFilePath(), $renderCode );
+
+        $this->phpStormFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
     }
 
 
