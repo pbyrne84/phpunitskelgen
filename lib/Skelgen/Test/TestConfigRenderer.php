@@ -1,11 +1,13 @@
 <?php
 namespace Skelgen\Test;
 
+use Skelgen\Reflection\CustomReflectionClass;
+
 interface TestConfigRenderer {
 
     /**
-     * @param \Skelgen\Reflection\CustomReflectionClass $reflectionClass
+     * @param CustomReflectionClass $reflectionClass
      * @return TestConfig|null
      */
-    public function calculateConfig( \Skelgen\Reflection\CustomReflectionClass $reflectionClass );
+    public function calculateConfig( CustomReflectionClass $reflectionClass );
 }

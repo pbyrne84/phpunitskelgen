@@ -1,6 +1,9 @@
 <?php
 namespace Skelgen\Test;
 
+use Skelgen\File\ExistingFile;
+use Skelgen\Reflection\ConstructorParameter;
+
 class TestConfig {
     const CLASS_NAME = __CLASS__;
 
@@ -13,7 +16,7 @@ class TestConfig {
             $className;
 
     /**
-     * @var \Skelgen\File\ExistingFile
+     * @var ExistingFile
      */
     private $templateLocation;
 
@@ -23,79 +26,84 @@ class TestConfig {
     private $reflectionMethodList = array();
 
     /**
-     * @var array|\Skelgen\Reflection\ConstructorParameter[]
+     * @var array|ConstructorParameter[]
      */
     private $constructorParameterList = array();
 
 
     /**
-     * @param \Skelgen\File\ExistingFile $templateLocation
-     * @param string                     $testOutputFilePath
-     * @param string                     $className
-     * @param string                     $testNameSpace
-     * @param string                     $testClassName
+     * @param ExistingFile $templateLocation
+     * @param string       $testOutputFilePath
+     * @param string       $className
+     * @param string       $testNameSpace
+     * @param string       $testClassName
      */
-    function __construct( \Skelgen\File\ExistingFile $templateLocation, $testOutputFilePath, $className, $testNameSpace, $testClassName ) {
+    function __construct( ExistingFile $templateLocation,
+                          $testOutputFilePath,
+                          $className,
+                          $testNameSpace,
+                          $testClassName ) {
         $this->templateLocation   = $templateLocation;
         $this->testOutputFilePath = $testOutputFilePath;
-        $this->className            = $className;
+        $this->className          = $className;
         $this->testNameSpace      = $testNameSpace;
-        $this->testClassName       = $testClassName;
+        $this->testClassName      = $testClassName;
     }
 
 
-    public static function createFromReflectionClass( \Skelgen\File\ExistingFile $templateLocation, $testOutputFilePath, \ReflectionClass $reflectionClass ) {
+    /**
+     * @param ExistingFile     $templateLocation
+     * @param string           $testOutputFilePath
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return TestConfig
+     */
+    public static function createFromReflectionClass( ExistingFile $templateLocation,
+                                                      $testOutputFilePath,
+                                                      \ReflectionClass $reflectionClass ) {
         return new TestConfig(
-              $templateLocation
-            , $testOutputFilePath
-            , $reflectionClass->getShortName()
-            , $reflectionClass->getNamespaceName()
-            , $reflectionClass->getShortName() . 'Test'
+            $templateLocation,
+            $testOutputFilePath,
+            $reflectionClass->getShortName(),
+            $reflectionClass->getNamespaceName(),
+            $reflectionClass->getShortName() . 'Test'
         );
     }
 
-    /**
-     * @param \ReflectionMethod $reflectionMethod
-     */
-    public function addReflectionMethod( \ReflectionMethod $reflectionMethod ) {
-        $this->reflectionMethodList[] =  $reflectionMethod;
-    }
-
 
     /**
-     * @param array $reflectionMethods
-     * @internal param array|\ReflectionMethod $reflectionMethod
+     * @param array|\ReflectionMethod[] $reflectionMethods
      */
     public function addReflectionMethods( array  $reflectionMethods ) {
-        foreach( $reflectionMethods as $reflectionMethod ) {
+        foreach ( $reflectionMethods as $reflectionMethod ) {
             $this->addReflectionMethod( $reflectionMethod );
         }
     }
 
 
     /**
-     * @param \Skelgen\Reflection\ConstructorParameter $constructorParameter
+     * @param \ReflectionMethod $reflectionMethod
      */
-    public function addConstructorParameter( \Skelgen\Reflection\ConstructorParameter $constructorParameter ) {
-        $this->constructorParameterList[ ] = $constructorParameter;
+    public function addReflectionMethod( \ReflectionMethod $reflectionMethod ) {
+        $this->reflectionMethodList[ ] = $reflectionMethod;
     }
 
 
     /**
-     * @param array|\Skelgen\Reflection\ConstructorParameter[]  $constructorParameters
+     * @param array|ConstructorParameter[] $constructorParameters
      */
     public function addConstructorParameters( array $constructorParameters ) {
-        foreach( $constructorParameters as $constructorParameter ) {
+        foreach ( $constructorParameters as $constructorParameter ) {
             $this->addConstructorParameter( $constructorParameter );
         }
     }
 
 
     /**
-     * @return string
+     * @param ConstructorParameter $constructorParameter
      */
-    public function getTestClassName() {
-        return $this->testClassName;
+    public function addConstructorParameter( ConstructorParameter $constructorParameter ) {
+        $this->constructorParameterList[ ] = $constructorParameter;
     }
 
 
@@ -116,13 +124,16 @@ class TestConfig {
 
 
     /**
-     * @return \Skelgen\File\ExistingFile
+     * @return ExistingFile
      */
     public function getTemplateLocation() {
         return $this->templateLocation;
     }
 
 
+    /**
+     * @return array|ConstructorParameter
+     */
     public function getConstructorParameterList() {
         return $this->constructorParameterList;
     }
@@ -141,5 +152,13 @@ class TestConfig {
      */
     public function getClassInstanceName() {
         return lcfirst( $this->getTestClassName() );
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getTestClassName() {
+        return $this->testClassName;
     }
 }

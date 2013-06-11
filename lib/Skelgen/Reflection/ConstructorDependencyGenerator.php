@@ -7,6 +7,11 @@ class ConstructorDependencyGenerator {
     const CLASS_NAME = __CLASS__;
 
 
+    /**
+     * @param \ReflectionClass $reflectedClass
+     *
+     * @return array|ConstructorParameter[]
+     */
     public function createConstructorParameterList( \ReflectionClass $reflectedClass ) {
         $constructorParameterList = array();
         /** @var \ReflectionMethod $method */

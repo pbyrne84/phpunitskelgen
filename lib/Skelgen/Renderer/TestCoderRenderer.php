@@ -1,11 +1,13 @@
 <?php
 namespace Skelgen\Renderer;
 
+use Skelgen\Test\TestConfig;
+
 interface TestCoderRenderer {
 
     /**
-     * @param \Skelgen\Test\TestConfig $config
+     * @param TestConfig $config
      * @return string
      */
-    public function renderCode( \Skelgen\Test\TestConfig $config );
+    public function renderCode( TestConfig $config );
 }
