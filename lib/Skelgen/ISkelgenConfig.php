@@ -2,7 +2,7 @@
 namespace Skelgen;
 
 use Skelgen\File\ExistingFile;
-use Skelgen\Project\IProjectConfig;
+use Skelgen\Project\ProjectConfig;
 
 interface ISkelgenConfig {
 
@@ -16,7 +16,7 @@ interface ISkelgenConfig {
 
     /**
      * @param \ReflectionClass $classToTest
-     * @return IProjectConfig
+     * @return ProjectConfig
      */
     public function createProjectConfig( \ReflectionClass $classToTest );
 

@@ -5,7 +5,7 @@ namespace Skelgen\TestCase;
 
 use Skelgen\File\SubFolderGenerator;
 use Skelgen\IDE\IdeFileOpener;
-use Skelgen\Project\IProjectConfig;
+use Skelgen\Project\ProjectConfig;
 use Skelgen\Reflection\ConstructorDependencyGenerator;
 use Skelgen\Reflection\CustomReflectionClass;
 use Skelgen\Renderer\TestCoderRenderer;
@@ -32,7 +32,7 @@ class TestCaseWriter {
     }
 
 
-    public function writeTestCase( IProjectConfig $projectConfig, CustomReflectionClass $customReflectionClass ) {
+    public function writeTestCase( ProjectConfig $projectConfig, CustomReflectionClass $customReflectionClass ) {
         $constructorDependencyGenerator = new ConstructorDependencyGenerator();
         $testConfig    = $this->locateRelevantTestConfig( $projectConfig, $customReflectionClass );
         if ( $testConfig == null ) {
@@ -56,12 +56,12 @@ class TestCaseWriter {
 
 
     /**
-     * @param IProjectConfig        $projectConfig
+     * @param ProjectConfig        $projectConfig
      * @param CustomReflectionClass $customReflectionClass
      *
      * @return null|\Skelgen\Test\TestConfig
      */
-    private function locateRelevantTestConfig( IProjectConfig $projectConfig,
+    private function locateRelevantTestConfig( ProjectConfig $projectConfig,
                                                CustomReflectionClass $customReflectionClass ) {
         $testConfig = null;
         foreach ( $projectConfig->getCustomRuleMatchers() as $testConfigRenderer ) {

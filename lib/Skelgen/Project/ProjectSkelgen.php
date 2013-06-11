@@ -6,15 +6,15 @@ class ProjectSkelgen {
     const CLASS_NAME = __CLASS__;
 
     /**
-     * @var IProjectConfig
+     * @var ProjectConfig
      */
     private $config;
 
 
     /**
-     * @param IProjectConfig $config
+     * @param ProjectConfig $config
      */
-    function __construct( IProjectConfig $config ) {
+    function __construct( ProjectConfig $config ) {
         $this->config = $config;
     }
 

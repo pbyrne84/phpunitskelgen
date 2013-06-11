@@ -4,7 +4,7 @@ namespace Skelgen\Project;
 use Skelgen\File\ExistingDirectory;
 use Skelgen\Test\TestConfigRenderer;
 
-interface IProjectConfig {
+interface ProjectConfig {
     /**
      * @return string
      */
