@@ -30,7 +30,7 @@ class SubFolderGenerator {
             var_dump( $currentDir );
             if ( !is_dir( $currentDir ) ) {
                 mkdir( $currentDir );
-                $this->addToVersionControlAction->addToVersionControl( new ExistingDirectory( $currentDir ) );
+                $this->addToVersionControlAction->addFolderToVersionControl( new ExistingDirectory( $currentDir ) );
             }
         }
     }

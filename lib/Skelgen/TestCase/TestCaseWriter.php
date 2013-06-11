@@ -3,6 +3,8 @@
 namespace Skelgen\TestCase;
 
 
+use Skelgen\File\AddToVersionControlAction;
+use Skelgen\File\ExistingFile;
 use Skelgen\File\SubFolderGenerator;
 use Skelgen\IDE\IdeFileOpener;
 use Skelgen\Project\ProjectConfig;
@@ -22,13 +24,18 @@ class TestCaseWriter {
     /** @var \Skelgen\Renderer\TestCoderRenderer */
     private $testCoderRenderer;
 
+    /** @var \Skelgen\File\AddToVersionControlAction */
+    private $addToVersionControlAction;
+
 
     function __construct( IdeFileOpener $phpStormFileOpener,
                           TestCoderRenderer $testCoderRenderer,
-                          SubFolderGenerator $subFolderGenerator) {
+                          SubFolderGenerator $subFolderGenerator,
+                          AddToVersionControlAction $addToVersionControlAction ) {
         $this->phpStormFileOpener = $phpStormFileOpener;
         $this->testCoderRenderer = $testCoderRenderer;
         $this->subFolderGenerator = $subFolderGenerator;
+        $this->addToVersionControlAction = $addToVersionControlAction;
     }
 
 
@@ -52,6 +59,7 @@ class TestCaseWriter {
         file_put_contents( $testConfig->getTestOutputFilePath(), $renderedCode );
 
         $this->phpStormFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
+        $this->addToVersionControlAction->addFileToVersionControl( new ExistingFile($testConfig->getTestOutputFilePath() ));
     }
 
 
