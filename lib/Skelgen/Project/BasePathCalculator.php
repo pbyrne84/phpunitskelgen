@@ -4,8 +4,9 @@ namespace Skelgen\Project;
 interface BasePathCalculator {
 
     /**
-     * @param \Skelgen\File\ExistingFile $classFilePath
+     * @param \SplFileInfo $classPath
+     *
      * @return \Skelgen\File\ExistingDirectory - basePath
      */
-    public function calculateBasePath( \Skelgen\File\ExistingFile $classFilePath );
+    public function calculateBasePath( \SplFileInfo $classPath );
 }
