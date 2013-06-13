@@ -8,11 +8,10 @@ interface ISkelgenConfig {
 
 
     /**
-     * @param \SplFileInfo $resourcePath
-     *
+     * @param ExistingFile $filePath
      * @return boolean
      */
-    public function isProject( \SplFileInfo $resourcePath );
+    public function isProject( ExistingFile $filePath );
 
 
     /**
@@ -29,11 +28,10 @@ interface ISkelgenConfig {
 
 
     /**
-     * @param \SplFileInfo $testFileLocation
-     *
+     * @param \Skelgen\File\ExistingFile $testFileLocation
      * @return \Skelgen\File\ExistingFile  - path to an includable file that registers the autoloader
      */
-    public function getAutoLoaderPath( \SplFileInfo $testFileLocation );
+    public function getAutoLoaderPath( ExistingFile $testFileLocation );
 
 
     /**
@@ -43,9 +41,8 @@ interface ISkelgenConfig {
 
 
     /**
-     * @param \Skelgen\File\ExistingFile|\SplFileInfo $testFileLocation
-     *
+     * @param \Skelgen\File\ExistingFile $testFileLocation
      * @return \Skelgen\File\ExistingDirectory
      */
-    public function getBaseFolder( \SplFileInfo $testFileLocation );
+    public function getBaseFolder( ExistingFile $testFileLocation );
 }
