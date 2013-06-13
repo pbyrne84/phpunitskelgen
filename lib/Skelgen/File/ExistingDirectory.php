@@ -1,7 +1,7 @@
 <?php
 namespace Skelgen\File;
 
-class ExistingDirectory extends \SplFileInfo{
+class ExistingDirectory extends \SplFileInfo implements VerifiedFileSystemResourceMarker{
     const CLASS_NAME = __CLASS__;
 
 

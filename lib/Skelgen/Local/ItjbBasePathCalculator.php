@@ -8,13 +8,14 @@ class ItjbBasePathCalculator implements \Skelgen\Project\BasePathCalculator {
 
 
     /**
-     * @param \Skelgen\File\ExistingFile $
-     * @param $filePath
+     * @param \Skelgen\File\VerifiedFileSystemResourceMarker $classFilePath
+     *
      * @throws \RuntimeException
+     * @internal param $ \Skelgen\File\ExistingFile $
      * @return \Skelgen\File\ExistingDirectory - basePath
      */
-    public function calculateBasePath( \Skelgen\File\ExistingFile $filePath ) {
-        $absolutePath = str_replace( '\\', '/', $filePath->getRealPath()  );
+    public function calculateBasePath( \Skelgen\File\VerifiedFileSystemResourceMarker $classFilePath ) {
+        $absolutePath = str_replace( '\\', '/', $classFilePath->getRealPath()  );
         $regex = '~(\w):(.*)dev.itjb4.local/ITJB(\d|i)/~i';
         if( !preg_match( $regex, $absolutePath, $matches ) ){
             throw new \RuntimeException("cannot calculate base path using " . $regex . "in " . $absolutePath );
