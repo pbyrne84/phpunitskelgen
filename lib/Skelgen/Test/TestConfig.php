@@ -132,7 +132,7 @@ class TestConfig {
 
 
     /**
-     * @return array|ConstructorParameter
+     * @return array|ConstructorParameter[]
      */
     public function getConstructorParameterList() {
         return $this->constructorParameterList;

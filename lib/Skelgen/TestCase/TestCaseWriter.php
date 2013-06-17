@@ -58,8 +58,8 @@ class TestCaseWriter {
         $this->subFolderGenerator->generateRequiredSubfolders( $testConfig->getTestOutputFilePath() );
         file_put_contents( $testConfig->getTestOutputFilePath(), $renderedCode );
 
-        $this->phpStormFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
         $this->addToVersionControlAction->addFileToVersionControl( new ExistingFile($testConfig->getTestOutputFilePath() ));
+        $this->phpStormFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
     }
 
 

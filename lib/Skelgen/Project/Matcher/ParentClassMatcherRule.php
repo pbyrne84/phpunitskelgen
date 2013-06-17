@@ -1,10 +1,12 @@
 <?php
 namespace Skelgen\Project\Matcher;
 
+use Skelgen\File\ExistingFile;
+
 class ParentClassMatcherRule {
     const CLASS_NAME = __CLASS__;
     /**
-     * @var \JE\IO\ExistingFile
+     * @var ExistingFile
      */
     private $template;
 
