@@ -1,29 +1,18 @@
 <?php
+//Phpstorm removed the internal way of hooking into the skelgen so we have to calculate the full qualified name.
 
-use Skelgen\PhpStorm\NamespaceFolderRule;
+use Skelgen\IDE\ExternalToolCallParser;
 
-require_once __DIR__ . '/../Skelgen/lib/Skelgen/PhpStorm/NamespaceFolderRule.php';
-require_once __DIR__ . '/../Skelgen/lib/Skelgen/PhpStorm/NamespaceClassNameAnalyser.php';
-
+require_once __DIR__ . '/lib/Skelgen/IDE/ParsedExternalToolCall.php';
+require_once __DIR__. '/lib/Skelgen/IDE/ExternalToolCallParser.php';
 
 $fileLocation = $_SERVER[ 'argv' ][ 1 ];
+$externalToolCallParser = new ExternalToolCallParser();
+$externalToolCall = $externalToolCallParser->parseCall( $fileLocation );
 
-$rules = array();
-$rules[] = new NamespaceFolderRule( 2, '~J:/inetpub/wwwroot/dev\.jars4\.local/kryten(.*)/PHP/(Jars.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~J:/inetpub/wwwroot/dev\.jars4\.local/kryten(.*)/PHP/modules/(JE.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~C:/Program Files/eclipse/local_workspace/workspace(.*)/kryten/PHP/(Jars.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~C:/Program Files/eclipse/local_workspace/workspace(.*)/kryten/PHP/modules/(JE.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~J:/inetpub/wwwroot/dev\.jme\.local/jme(.*)/PHP/(JME.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~J:/inetpub/wwwroot/dev\.matchingservice\.local/matchingservice(.*)/PHP/modules/(.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~J:/inetpub/wwwroot/dev\.matchingservice\.local/matchingservice(.*)/PHP/(matchingservice.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~C:/Program Files/eclipse/local_workspace/workspace(.*)/itjb/PHP/(itjb.*)\.php~i' );
-$rules[] = new NamespaceFolderRule( 2, '~C:/Program Files/eclipse/local_workspace/workspace(.*)/itjb/PHP/modules/(JE.*)\.php~i' );
-
-$namesSpacedClassNameAnalyser = new \Skelgen\PhpStorm\NamespaceClassNameAnalyser( $rules );
-
-$className    = $namesSpacedClassNameAnalyser->getNameSpacedClassName( $fileLocation );
-
-$maskedPhpUnitSkelgenCall = __DIR__ . '/phpunit-skelgen.bat dummy dummy ' . $className . ' ' . '"' . $fileLocation . '"';
+$maskedPhpUnitSkelgenCall
+        = __DIR__ . '/phpunit-skelgen.bat dummy dummy ' . $externalToolCall->getFqnClass() . ' ' . '"' . $fileLocation . '"';
 
 echo exec( $maskedPhpUnitSkelgenCall, $output );
-var_dump( implode( "\n", $output ) );
+
+

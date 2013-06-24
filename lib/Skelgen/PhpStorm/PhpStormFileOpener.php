@@ -1,5 +1,7 @@
 <?php
-namespace Skelgen\IDE;
+namespace Skelgen\PhpStorm;
+
+use Skelgen\IDE\IdeFileOpener;
 
 class PhpStormFileOpener implements IdeFileOpener{
 
