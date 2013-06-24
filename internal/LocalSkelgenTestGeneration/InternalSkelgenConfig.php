@@ -3,7 +3,7 @@
 namespace LocalSkelgenTestGeneration;
 
 
-use JESkelgen\Calculator\TestFilePathCalculator;
+use Skelgen\File\TestFilePathCalculator;
 use JESkelgen\Config\JeProjectConfig;
 use Skelgen\Config\SkelgenConfig;
 use Skelgen\File\ExistingDirectory;
