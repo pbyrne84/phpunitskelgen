@@ -1,8 +1,9 @@
 <?php
-namespace Skelgen;
+namespace Skelgen\Config;
 
 use Skelgen\File\ExistingFile;
 use Skelgen\File\VerifiedFileSystemResource;
+use Skelgen\File;
 use Skelgen\Project\ProjectConfig;
 
 interface SkelgenConfig {

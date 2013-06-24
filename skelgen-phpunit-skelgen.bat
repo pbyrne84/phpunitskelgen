@@ -1,0 +1,1 @@
+c:\php\php.exe "phpunit-skelgenv2.php" %*
