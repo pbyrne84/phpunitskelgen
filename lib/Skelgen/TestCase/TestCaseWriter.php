@@ -15,8 +15,8 @@ use Skelgen\Renderer\TestCoderRenderer;
 class TestCaseWriter {
     const CLASS_NAME = __CLASS__;
 
-    /** @var \Skelgen\IDE\IdeFileOpener  */
-    private $phpStormFileOpener;
+    /** @var \Skelgen\IDE\IdeFileOpener */
+    private $ideFileOpener;
 
     /** @var \Skelgen\File\SubFolderGenerator */
     private $subFolderGenerator;
@@ -28,20 +28,34 @@ class TestCaseWriter {
     private $addToVersionControlAction;
 
 
-    function __construct( IdeFileOpener $phpStormFileOpener,
+    /**
+     * @param IdeFileOpener             $ideFileOpener
+     * @param TestCoderRenderer         $testCoderRenderer
+     * @param SubFolderGenerator        $subFolderGenerator
+     * @param AddToVersionControlAction $addToVersionControlAction
+     */
+    function __construct( IdeFileOpener $ideFileOpener,
                           TestCoderRenderer $testCoderRenderer,
                           SubFolderGenerator $subFolderGenerator,
                           AddToVersionControlAction $addToVersionControlAction ) {
-        $this->phpStormFileOpener = $phpStormFileOpener;
-        $this->testCoderRenderer = $testCoderRenderer;
-        $this->subFolderGenerator = $subFolderGenerator;
+        $this->ideFileOpener             = $ideFileOpener;
+        $this->testCoderRenderer         = $testCoderRenderer;
+        $this->subFolderGenerator        = $subFolderGenerator;
         $this->addToVersionControlAction = $addToVersionControlAction;
     }
 
 
+    /**
+     * Writes the test case using the project config and the reflection class for the class to test.
+     *
+     * @param ProjectConfig         $projectConfig
+     * @param CustomReflectionClass $customReflectionClass
+     *
+     * @throws \UnexpectedValueException
+     */
     public function writeTestCase( ProjectConfig $projectConfig, CustomReflectionClass $customReflectionClass ) {
         $constructorDependencyGenerator = new ConstructorDependencyGenerator();
-        $testConfig    = $this->locateRelevantTestConfig( $projectConfig, $customReflectionClass );
+        $testConfig                     = $this->locateRelevantTestConfig( $projectConfig, $customReflectionClass );
         if ( $testConfig == null ) {
             throw new \UnexpectedValueException( "Cannot locate test config" );
         }
@@ -55,16 +69,19 @@ class TestCaseWriter {
 
         $renderedCode = $this->testCoderRenderer->renderCode( $testConfig );
 
-        $this->subFolderGenerator->generateRequiredSubfolders( $testConfig->getTestOutputFilePath() );
+        $this->subFolderGenerator->generateRequiredSubFolders( $testConfig->getTestOutputFilePath() );
         file_put_contents( $testConfig->getTestOutputFilePath(), $renderedCode );
 
-        $this->addToVersionControlAction->addFileToVersionControl( new ExistingFile($testConfig->getTestOutputFilePath() ));
-        $this->phpStormFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
+        $this->addToVersionControlAction->addFileToVersionControl( new ExistingFile( $testConfig->getTestOutputFilePath() ) );
+        $this->ideFileOpener->openFile( new \SplFileInfo( $testConfig->getTestOutputFilePath() ) );
     }
 
 
     /**
-     * @param ProjectConfig        $projectConfig
+     * Looks through all the matches for a project to see which one suits the class to be tested. For example a controller
+     * class may benefit from a different setup than a plain vanilla test.
+     *
+     * @param ProjectConfig         $projectConfig
      * @param CustomReflectionClass $customReflectionClass
      *
      * @return null|\Skelgen\Test\TestConfig

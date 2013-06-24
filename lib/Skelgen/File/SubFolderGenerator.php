@@ -10,9 +10,13 @@ class SubFolderGenerator {
     private $addToVersionControlAction;
 
 
+    /**
+     * @param AddToVersionControlAction $addToVersionControlAction
+     */
     function __construct( AddToVersionControlAction $addToVersionControlAction = null ) {
-        if( $addToVersionControlAction === null ){
+        if ( $addToVersionControlAction === null ) {
             $this->addToVersionControlAction = new NullAddToVersionControlAction();
+
             return;
         }
 
@@ -20,7 +24,13 @@ class SubFolderGenerator {
     }
 
 
-    public function generateRequiredSubfolders( $testFilePath ) {
+    /**
+     * Generates the any sub folders required adding them to version control if and active implementation of
+     * AddToVersionControlAction has been injected in the constructor.
+     *
+     * @param string $testFilePath
+     */
+    public function generateRequiredSubFolders( $testFilePath ) {
         $testFilePath = str_replace( '\\', '/', $testFilePath );
         $folderParts  = explode( '/', $testFilePath );
         unset( $folderParts[ count( $folderParts ) - 1 ] );

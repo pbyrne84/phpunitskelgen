@@ -4,9 +4,9 @@ namespace Skelgen\Project;
 interface BasePathCalculator {
 
     /**
-     * @param \Skelgen\File\VerifiedFileSystemResourceMarker $classFilePath
+     * @param \Skelgen\File\VerifiedFileSystemResource $classFilePath
      *
      * @return \Skelgen\File\ExistingDirectory - basePath
      */
-    public function calculateBasePath( \Skelgen\File\VerifiedFileSystemResourceMarker $classFilePath );
+    public function calculateBasePath( \Skelgen\File\VerifiedFileSystemResource $classFilePath );
 }

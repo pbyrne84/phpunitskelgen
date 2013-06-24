@@ -3,6 +3,12 @@
 namespace Skelgen\File;
 
 
+/**
+ * Class AddToVersionControlAction
+ * @package Skelgen\File
+ *
+ * There is a Null implementation of this to reduce null checks and to disable this functionality.
+ */
 interface AddToVersionControlAction {
 
     /**

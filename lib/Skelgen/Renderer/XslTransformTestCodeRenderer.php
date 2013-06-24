@@ -3,6 +3,12 @@ namespace Skelgen\Renderer;
 
 use Skelgen\Test\TestConfig;
 
+/**
+ * Class XslTransformTestCodeRenderer
+ * @package Skelgen\Renderer
+ *
+ * Xml/Xslt code rendering implementation of TestCoderRenderer
+ */
 class XslTransformTestCodeRenderer implements TestCoderRenderer {
     /**
      * @var \DOMDocument
@@ -16,9 +22,7 @@ class XslTransformTestCodeRenderer implements TestCoderRenderer {
 
 
     /**
-     * @param TestConfig $config
-     *
-     * @return string
+     * @inheritdoc
      */
     public function renderCode( TestConfig $config ) {
         $this->document = new \DOMDocument();

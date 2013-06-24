@@ -2,21 +2,21 @@
 namespace Skelgen;
 
 use Skelgen\File\ExistingFile;
-use Skelgen\File\VerifiedFileSystemResourceMarker;
+use Skelgen\File\VerifiedFileSystemResource;
 use Skelgen\Project\ProjectConfig;
 
 interface SkelgenConfig {
 
 
     /**
-     * Used to determine whether the passed in resource matches this project, usually a list of this is iterated through
-     * until true is returned and then that instance is returned.
+     * Used to determine whether the passed in resource matches this project, usually a list of SkelgenConfigs is iterated through
+     * until true is returned and then that SkelgenConfig is used for test generation.
      *
-     * @param File\VerifiedFileSystemResourceMarker $verifiedFileSystemResource
+     * @param File\VerifiedFileSystemResource $verifiedFileSystemResource
      *
      * @return boolean
      */
-    public function isProject( VerifiedFileSystemResourceMarker $verifiedFileSystemResource );
+    public function isProject( VerifiedFileSystemResource $verifiedFileSystemResource );
 
 
     /**
@@ -39,13 +39,13 @@ interface SkelgenConfig {
 
     /**
      * The custom auto loader path if there is one. Some projects do not follow sane organisational rules so this allows
-     * hooking in custom include paths etc for generation and loading..
+     * hooking in custom include paths for generation and loading..
      *
-     * @param File\VerifiedFileSystemResourceMarker $testFileLocation
+     * @param File\VerifiedFileSystemResource $testFileLocation
      *
      * @return \Skelgen\File\ExistingFile  - path to an php include that registers the autoloader
      */
-    public function getAutoLoaderPath( VerifiedFileSystemResourceMarker $testFileLocation );
+    public function getAutoLoaderPath( VerifiedFileSystemResource $testFileLocation );
 
 
     /**
