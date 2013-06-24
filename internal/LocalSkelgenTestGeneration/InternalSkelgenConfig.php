@@ -3,6 +3,7 @@
 namespace LocalSkelgenTestGeneration;
 
 
+use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 use Skelgen\File\TestFilePathCalculator;
 use JESkelgen\Config\JeProjectConfig;
 use Skelgen\Config\SkelgenConfig;
@@ -15,7 +16,7 @@ use Skelgen\Project\ProjectConfig;
 class InternalSkelgenConfig implements SkelgenConfig {
     const CLASS_NAME = __CLASS__;
 
-    const PROJECT_REGEX = '~(phpunitskelgen/lib/Skelgen)~i' ;
+    const PROJECT_REGEX = '~(.*/phpunitskelgen/)~i' ;
 
 
     /**
@@ -27,7 +28,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
      * @return boolean
      */
     public function isProject( VerifiedFileSystemResource $verifiedFileSystemResource ) {
-        return false !== strpos( $this->normalisePath( $verifiedFileSystemResource ), 'lib/Skelgen/' );
+        return false !== strpos( $this->normalisePath( $verifiedFileSystemResource ), '/phpunitskelgen/lib/' );
     }
 
 
@@ -83,11 +84,10 @@ class InternalSkelgenConfig implements SkelgenConfig {
         $baseProjectFolder              = $this
                 ->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) )
                 ->getRealPath();
-        $outputDetailsFactoryParameters = new \JESkelgen\Calculator\OutputDetailsFactoryParameters(
-            $classToTest
-            , new ExistingDirectory( $baseProjectFolder )
-            , new ExistingDirectory( $baseProjectFolder . '/PHP/tests/Unit/' )
-            , new ExistingDirectory( $baseProjectFolder . '/PHP/modules/' )
+        $outputDetailsFactoryParameters = new OutputDetailsFactoryParameters(
+            $classToTest ,
+            new ExistingDirectory( $baseProjectFolder ),
+            new ExistingDirectory( $baseProjectFolder . '/test/' )
         );
 
         $testFilePathCalculator = new TestFilePathCalculator( $outputDetailsFactoryParameters );
