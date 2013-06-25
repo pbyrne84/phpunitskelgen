@@ -3,6 +3,9 @@
 namespace Skelgen\File;
 
 
+use Skelgen\File\VCS\AddToVersionControlAction;
+use Skelgen\File\VCS\NullAddToVersionControlAction;
+
 class SubFolderGenerator {
     const CLASS_NAME = __CLASS__;
 

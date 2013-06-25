@@ -6,12 +6,13 @@ namespace Skelgen\Autoload;
 class SkelgenAutoload {
     const CLASS_NAME = __CLASS__;
 
-    private $namespaceList = array( 'Skelgen' );
+    private $namespaceList = array( 'Skelgen', 'LocalSkelgenTestGeneration' );
 
 
     function __construct() {
-        $jeSkelgenPath = get_include_path() . PATH_SEPARATOR . __DIR__ . '/../../';
-        $this->addAutloaderPath( $jeSkelgenPath );
+        $this->addAutloaderPath( __DIR__ . '/../../' );
+        $this->addAutloaderPath( __DIR__ . '/../../../internal/' );
+        $this->addAutloaderPath( __DIR__ . '/../../../test/' );
     }
 
 
@@ -39,13 +40,25 @@ class SkelgenAutoload {
     public function initSkelgenAutoLoad() {
         $autoload = $this;
         spl_autoload_register( function ( $className ) use ( $autoload ) {
-            if ( !$autoload->nameSpaceMatches( $className ) ) {
+            if ( !$autoload->isValidForThisAutoloader( $className ) ) {
                 return;
             }
 
-            if ( !include_once $className . '.php' ) {
-                var_dump( get_include_path() );
-            }
+            $classFileName = $className . '.php';
+
+            $autoLoadErrorHandler = function() use ($classFileName){
+                $message = "Could not find $classFileName, tried \n" ;
+                $triedPaths = explode( PATH_SEPARATOR, get_include_path() );
+                foreach( $triedPaths as $triedPath){
+                    $message .= realpath( $triedPath ) . '/' . $classFileName . "\n";
+                }
+
+                throw new CouldNotResolveAutoIncludeException( $message );
+            };
+
+            set_error_handler( $autoLoadErrorHandler );
+            include_once $classFileName;
+            restore_error_handler();
         } );
     }
 
@@ -55,7 +68,11 @@ class SkelgenAutoload {
      *
      * @return bool
      */
-    public function nameSpaceMatches( $className ) {
+    public function isValidForThisAutoloader( $className ) {
+        if( $className == 'Phockito' ){
+            return true;
+        }
+
         $parts = explode( '\\', $className );
         return in_array( $parts[0], $this->namespaceList );
 

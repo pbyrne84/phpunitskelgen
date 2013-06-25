@@ -3,7 +3,7 @@
 namespace Skelgen\TestCase;
 
 
-use Skelgen\File\AddToVersionControlAction;
+use Skelgen\File\VCS\AddToVersionControlAction;
 use Skelgen\File\ExistingFile;
 use Skelgen\File\SubFolderGenerator;
 use Skelgen\IDE\IdeFileOpener;
@@ -24,7 +24,7 @@ class TestCaseWriter {
     /** @var \Skelgen\Renderer\TestCoderRenderer */
     private $testCoderRenderer;
 
-    /** @var \Skelgen\File\AddToVersionControlAction */
+    /** @var \Skelgen\File\VCS\AddToVersionControlAction */
     private $addToVersionControlAction;
 
 
@@ -32,7 +32,7 @@ class TestCaseWriter {
      * @param IdeFileOpener             $ideFileOpener
      * @param TestCoderRenderer         $testCoderRenderer
      * @param SubFolderGenerator        $subFolderGenerator
-     * @param AddToVersionControlAction $addToVersionControlAction
+     * @param \Skelgen\File\VCS\AddToVersionControlAction $addToVersionControlAction
      */
     function __construct( IdeFileOpener $ideFileOpener,
                           TestCoderRenderer $testCoderRenderer,
@@ -66,6 +66,7 @@ class TestCaseWriter {
 
         $constructorParameterList = $constructorDependencyGenerator->createConstructorParameterList( $customReflectionClass );
         $testConfig->addConstructorParameters( $constructorParameterList );
+
 
         $renderedCode = $this->testCoderRenderer->renderCode( $testConfig );
 

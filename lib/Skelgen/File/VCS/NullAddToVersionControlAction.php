@@ -1,7 +1,11 @@
 <?php
 
-namespace Skelgen\File;
+namespace Skelgen\File\VCS;
 
+
+use Skelgen\File\ExistingDirectory;
+use Skelgen\File\ExistingFile;
+use Skelgen\File\VCS\AddToVersionControlAction;
 
 class NullAddToVersionControlAction implements AddToVersionControlAction {
     const CLASS_NAME = __CLASS__;

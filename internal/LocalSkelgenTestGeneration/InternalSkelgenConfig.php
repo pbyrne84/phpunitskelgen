@@ -5,53 +5,42 @@ namespace LocalSkelgenTestGeneration;
 
 use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 use Skelgen\File\TestFilePathCalculator;
-use Skelgen\Project\ProjectConfigImpl;
+use Skelgen\Project\GenericProjectConfig;
 use Skelgen\Config\SkelgenConfig;
 use Skelgen\File\ExistingDirectory;
 use Skelgen\File\ExistingFile;
 use Skelgen\File\VerifiedFileSystemResource;
 use Skelgen\File;
-use Skelgen\Project\ProjectConfig;
 
 class InternalSkelgenConfig implements SkelgenConfig {
     const CLASS_NAME = __CLASS__;
 
     const PROJECT_REGEX = '~(.*/phpunitskelgen/)~i';
 
-    /**
-     * @return string - project reference name for config
-     */
-    public function getProjectName() {
-        return 'Skelgen';
-    }
-
-
 
     /**
-     * Used to determine whether the passed in resource matches this project, usually a list of SkelgenConfigs is iterated through
-     * until true is returned and then that SkelgenConfig is used for test generation.
-     *
-     * @param File\VerifiedFileSystemResource $verifiedFileSystemResource
-     *
-     * @return boolean
+     * @inheritdoc
      */
     public function isProject( VerifiedFileSystemResource $verifiedFileSystemResource ) {
-        return false !== strpos( $this->normalisePath( $verifiedFileSystemResource ), '/phpunitskelgen/lib/' );
+        return false !== strpos( $this->normalisePath( $verifiedFileSystemResource ), '/phpunitskelgen/' );
     }
 
 
+    /**
+     * @param VerifiedFileSystemResource $verifiedFileSystemResource
+     *
+     * @return string
+     */
     private function normalisePath( VerifiedFileSystemResource $verifiedFileSystemResource ) {
         return str_replace( '\\', '/', $verifiedFileSystemResource );
     }
 
 
     /**
-     * @param \ReflectionClass $classToTest
-     *
-     * @return ProjectConfigImpl|ProjectConfig
+     * @inheritdoc
      */
     public function createProjectConfig( \ReflectionClass $classToTest ) {
-        $projectConfig = new ProjectConfigImpl(
+        $projectConfig = new GenericProjectConfig(
             $this->getProjectName(),
             $this->getTestOutputFilePath( $classToTest ),
             $this->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) ),
@@ -65,12 +54,20 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
+     * @inheritdoc
+     */
+    public function getProjectName() {
+        return 'Skelgen';
+    }
+
+
+    /**
      * @param \ReflectionClass $classToTest
      *
      * @return string
      */
     private function getTestOutputFilePath( \ReflectionClass $classToTest ) {
-        $baseProjectFolder              = $this
+        $baseProjectFolder = $this
                 ->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) )
                 ->getRealPath();
 
@@ -102,39 +99,24 @@ class InternalSkelgenConfig implements SkelgenConfig {
      * @return \Skelgen\Project\BasePathCalculator
      */
     private function createBasePathCalculator() {
-        return new \JESkelgen\BasePath\BasePathCalculatorImpl( self::PROJECT_REGEX );
+        return new InternalBasePathCalculator( self::PROJECT_REGEX );
     }
 
 
     /**
-     * @param \Skelgen\Project\ProjectConfigImpl $config
+     * @param \Skelgen\Project\GenericProjectConfig $config
      *
      * @return array|\Skelgen\Test\TestConfigRenderer[]
      */
-    private function getCustomRuleMatchers( ProjectConfigImpl $config ) {
+    private function getCustomRuleMatchers( GenericProjectConfig $config ) {
         return array(
-            new \JESkelgen\Renderer\ItjbTestConfigRenderer( $config ),
-            new \JESkelgen\Renderer\StandardTestConfigRenderer( $config )
+            new InternalTestConfigRenderer( $config )
         );
     }
 
 
     /**
-     * Returns the regex used to determine the project path when matching with the isProject call
-     *
-     * @return string
-     */
-    public function getProjectPathRegex() {
-    }
-
-
-    /**
-     * The custom auto loader path if there is one. Some projects do not follow sane organisational rules so this allows
-     * hooking in custom include paths for generation and loading..
-     *
-     * @param File\VerifiedFileSystemResource $testFileLocation
-     *
-     * @return \Skelgen\File\ExistingFile  - path to an php include that registers the autoloader
+     * @inheritdoc
      */
     public function getAutoLoaderPath( VerifiedFileSystemResource $testFileLocation ) {
         return null;
@@ -142,9 +124,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * Uses the default one
-     * Whether there is a custom auto loader
-     * @return boolean
+     * @inheritdoc
      */
     public function hasAutoLoader() {
         return false;

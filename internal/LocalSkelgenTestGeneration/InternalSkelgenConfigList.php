@@ -10,6 +10,7 @@ class InternalSkelgenConfigList extends SkelgenConfigList{
 
 
     function __construct() {
+        parent::__construct( array( new InternalSkelgenConfig() ) );
     }
 
 

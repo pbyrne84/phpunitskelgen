@@ -1,6 +1,8 @@
 <?php
 
-namespace Skelgen\File;
+namespace Skelgen\File\VCS;
+use Skelgen\File\ExistingFile;
+use Skelgen\File\ExistingDirectory;
 
 
 /**

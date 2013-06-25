@@ -151,7 +151,7 @@ class TestConfig {
      * @return string
      */
     public function getClassInstanceName() {
-        return lcfirst( $this->getTestClassName() );
+        return lcfirst( $this->getClassName() );
     }
 
 

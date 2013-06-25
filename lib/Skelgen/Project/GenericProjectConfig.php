@@ -5,7 +5,7 @@ use Skelgen\File\ExistingDirectory;
 use Skelgen\Project\ProjectConfig;
 use Skelgen\Test\TestConfigRenderer;
 
-class ProjectConfigImpl implements ProjectConfig {
+class GenericProjectConfig implements ProjectConfig {
     const CLASS_NAME = __CLASS__;
 
     /**

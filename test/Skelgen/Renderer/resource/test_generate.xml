@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xml>
-  <class_name>XslTransformTestCodeRendererTest</class_name>
-  <class_instance_name>xslTransformTestCodeRendererTestTest</class_instance_name>
+  <class_name>XslTransformTestCodeRenderer</class_name>
+  <class_instance_name>xslTransformTestCodeRendererTest</class_instance_name>
   <test_class_name>XslTransformTestCodeRendererTestTest</test_class_name>
   <namespace>Skelgen\Renderer</namespace>
   <constructor_injections>

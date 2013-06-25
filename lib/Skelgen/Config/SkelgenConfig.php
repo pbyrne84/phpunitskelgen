@@ -36,14 +36,6 @@ interface SkelgenConfig {
 
 
     /**
-     * Returns the regex used to determine the project path when matching with the isProject call
-     *
-     * @return string
-     */
-    public function getProjectPathRegex();
-
-
-    /**
      * The custom auto loader path if there is one. Some projects do not follow sane organisational rules so this allows
      * hooking in custom include paths for generation and loading..
      *

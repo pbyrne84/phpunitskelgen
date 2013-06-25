@@ -1,14 +1,20 @@
 <?php
 
-namespace Skelgen\File;
+namespace Skelgen\File\VCS;
 
 
-class SubversionAddToVersionControlAction implements AddToVersionControlAction {
+use Skelgen\File\ExistingDirectory;
+use Skelgen\File\ExistingFile;
+use Skelgen\File\VerifiedFileSystemResource;
+
+class GitAddToVersionControlAction implements AddToVersionControlAction {
     const CLASS_NAME = __CLASS__;
 
 
     /**
      * @param ExistingDirectory $directory
+     *
+     * @return void
      */
     public function addFolderToVersionControl( ExistingDirectory $directory ) {
         $this->runAddAction( $directory );
@@ -16,16 +22,16 @@ class SubversionAddToVersionControlAction implements AddToVersionControlAction {
 
 
     /**
-     * @param \SplFileInfo      $path
+     * @param \Skelgen\File\VerifiedFileSystemResource|\SplFileInfo $path
      */
-    public function runAddAction( \SplFileInfo  $path ) {
-        $command = 'svn add "' . $path->getRealPath() . '"';
+    public function runAddAction( VerifiedFileSystemResource $path ) {
+        $command = 'git add -A "' . $path->getRealPath() . '"';
+        echo "Running $command\n";
         $fp      = popen( $command, 'r' );
         while ( !feof( $fp ) ) {
             print fread( $fp, 1024 ) . "\n";
         }
     }
-
 
     /**
      * @param ExistingFile $file
@@ -34,5 +40,6 @@ class SubversionAddToVersionControlAction implements AddToVersionControlAction {
      */
     public function addFileToVersionControl( ExistingFile $file ) {
         $this->runAddAction( $file );
+
     }
 }
