@@ -5,6 +5,12 @@ use Skelgen\File\ExistingDirectory;
 use Skelgen\Test\TestConfigRenderer;
 
 interface ProjectConfig {
+
+    /**
+     * @return string
+     */
+    public function getReferenceName();
+
     /**
      * @return string
      */

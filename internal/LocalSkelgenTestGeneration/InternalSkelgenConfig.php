@@ -5,7 +5,7 @@ namespace LocalSkelgenTestGeneration;
 
 use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 use Skelgen\File\TestFilePathCalculator;
-use JESkelgen\Config\JeProjectConfig;
+use Skelgen\Project\ProjectConfigImpl;
 use Skelgen\Config\SkelgenConfig;
 use Skelgen\File\ExistingDirectory;
 use Skelgen\File\ExistingFile;
@@ -48,10 +48,11 @@ class InternalSkelgenConfig implements SkelgenConfig {
     /**
      * @param \ReflectionClass $classToTest
      *
-     * @return JeProjectConfig|ProjectConfig
+     * @return ProjectConfigImpl|ProjectConfig
      */
     public function createProjectConfig( \ReflectionClass $classToTest ) {
-        $projectConfig = new JeProjectConfig(
+        $projectConfig = new ProjectConfigImpl(
+            $this->getProjectName(),
             $this->getTestOutputFilePath( $classToTest ),
             $this->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) ),
             self::PROJECT_REGEX
@@ -106,11 +107,11 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * @param JeProjectConfig $config
+     * @param \Skelgen\Project\ProjectConfigImpl $config
      *
      * @return array|\Skelgen\Test\TestConfigRenderer[]
      */
-    private function getCustomRuleMatchers( JeProjectConfig $config ) {
+    private function getCustomRuleMatchers( ProjectConfigImpl $config ) {
         return array(
             new \JESkelgen\Renderer\ItjbTestConfigRenderer( $config ),
             new \JESkelgen\Renderer\StandardTestConfigRenderer( $config )
