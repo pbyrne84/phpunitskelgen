@@ -57,7 +57,7 @@ class TestCaseWriter {
         $constructorDependencyGenerator = new ConstructorDependencyGenerator();
         $testConfig                     = $this->locateRelevantTestConfig( $projectConfig, $customReflectionClass );
         if ( $testConfig == null ) {
-            throw new \UnexpectedValueException( "Cannot locate test config" );
+            throw new \UnexpectedValueException( "Cannot locate test config for " . $projectConfig->getProjectPathRegex() );
         }
 
         if ( is_file( $testConfig->getTestOutputFilePath() ) ) {

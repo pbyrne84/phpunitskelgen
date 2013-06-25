@@ -8,6 +8,11 @@ use Skelgen\Project\ProjectConfig;
 
 interface SkelgenConfig {
 
+    /**
+     * @return string - project reference name for config
+     */
+    public function getProjectName();
+
 
     /**
      * Used to determine whether the passed in resource matches this project, usually a list of SkelgenConfigs is iterated through

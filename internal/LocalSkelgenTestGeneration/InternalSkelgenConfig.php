@@ -16,7 +16,15 @@ use Skelgen\Project\ProjectConfig;
 class InternalSkelgenConfig implements SkelgenConfig {
     const CLASS_NAME = __CLASS__;
 
-    const PROJECT_REGEX = '~(.*/phpunitskelgen/)~i' ;
+    const PROJECT_REGEX = '~(.*/phpunitskelgen/)~i';
+
+    /**
+     * @return string - project reference name for config
+     */
+    public function getProjectName() {
+        return 'Skelgen';
+    }
+
 
 
     /**
@@ -54,6 +62,29 @@ class InternalSkelgenConfig implements SkelgenConfig {
         return $projectConfig;
     }
 
+
+    /**
+     * @param \ReflectionClass $classToTest
+     *
+     * @return string
+     */
+    private function getTestOutputFilePath( \ReflectionClass $classToTest ) {
+        $baseProjectFolder              = $this
+                ->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) )
+                ->getRealPath();
+
+        $outputDetailsFactoryParameters = new OutputDetailsFactoryParameters(
+            $classToTest,
+            new ExistingDirectory( $baseProjectFolder ),
+            new ExistingDirectory( $baseProjectFolder . '/test/' )
+        );
+
+        $testFilePathCalculator = new TestFilePathCalculator( $outputDetailsFactoryParameters );
+
+        return $testFilePathCalculator->calculate( $classToTest );
+    }
+
+
     /**
      * @param VerifiedFileSystemResource $testFileLocation
      *
@@ -74,27 +105,6 @@ class InternalSkelgenConfig implements SkelgenConfig {
     }
 
 
-
-    /**
-     * @param \ReflectionClass $classToTest
-     *
-     * @return string
-     */
-    private function getTestOutputFilePath( \ReflectionClass $classToTest ) {
-        $baseProjectFolder              = $this
-                ->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) )
-                ->getRealPath();
-        $outputDetailsFactoryParameters = new OutputDetailsFactoryParameters(
-            $classToTest ,
-            new ExistingDirectory( $baseProjectFolder ),
-            new ExistingDirectory( $baseProjectFolder . '/test/' )
-        );
-
-        $testFilePathCalculator = new TestFilePathCalculator( $outputDetailsFactoryParameters );
-        return $testFilePathCalculator->calculate( $classToTest );
-    }
-
-
     /**
      * @param JeProjectConfig $config
      *
@@ -106,6 +116,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
             new \JESkelgen\Renderer\StandardTestConfigRenderer( $config )
         );
     }
+
 
     /**
      * Returns the regex used to determine the project path when matching with the isProject call
