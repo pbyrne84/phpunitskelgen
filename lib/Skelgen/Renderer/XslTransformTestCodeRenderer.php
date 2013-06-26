@@ -10,14 +10,15 @@ use Skelgen\Test\TestConfig;
  * Xml/Xslt code rendering implementation of TestCoderRenderer
  */
 class XslTransformTestCodeRenderer implements TestCoderRenderer {
-    /**
-     * @var \DOMDocument
-     */
+    /** @var \DOMDocument */
     private $document;
 
+    /** @var DomXslTransformer */
+    private $domXslTransformer;
 
-    function __construct() {
 
+    function __construct( DomXslTransformer $domXslTransformer ) {
+        $this->domXslTransformer = $domXslTransformer;
     }
 
 
@@ -91,8 +92,7 @@ class XslTransformTestCodeRenderer implements TestCoderRenderer {
      * @return string
      */
     private function transForm( TestConfig $config ) {
-        $domXslTransformer = new DomXslTransformer();
-        return $domXslTransformer->transformDomDocument( $config->getTemplateLocation(), $this->document );
+        return $this->domXslTransformer->transformDomDocument( $config->getTemplateLocation(), $this->document );
     }
 
 }

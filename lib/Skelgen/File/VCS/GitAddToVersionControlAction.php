@@ -25,12 +25,23 @@ class GitAddToVersionControlAction implements AddToVersionControlAction {
      * @param \Skelgen\File\VerifiedFileSystemResource|\SplFileInfo $path
      */
     public function runAddAction( VerifiedFileSystemResource $path ) {
+        $originalDir = getcwd();
+        if( $path->isDir() ){
+            $directory = $path->getRealPath();
+        }else{
+            $directory = $path->getPath();
+        }
+
+        chdir( $directory );
+
         $command = 'git add -A "' . $path->getRealPath() . '"';
         echo "Running $command\n";
         $fp      = popen( $command, 'r' );
         while ( !feof( $fp ) ) {
             print fread( $fp, 1024 ) . "\n";
         }
+
+        chdir( $originalDir );
     }
 
     /**

@@ -3,11 +3,13 @@
 namespace LocalSkelgenTestGeneration;
 
 use Skelgen\Environment\InitialisationConfig;
+use Skelgen\File\FileSystem;
 use Skelgen\File\SubFolderGenerator;
 use Skelgen\File\VCS\GitAddToVersionControlAction;
 use Skelgen\PhpStorm\PhpStormFileOpener;
 use Skelgen\Config\SkelgenConfig;
 use Skelgen\Reflection\CustomReflectionClass;
+use Skelgen\Renderer\DomXslTransformer;
 use Skelgen\Renderer\XslTransformTestCodeRenderer;
 use Skelgen\TestCase\TestCaseWriter;
 
@@ -32,8 +34,8 @@ class InternalSkelgenRunner {
         $addToVersionControlAction = new GitAddToVersionControlAction();
         $testCaseWriter            = new TestCaseWriter(
             new PhpStormFileOpener(),
-            new XslTransformTestCodeRenderer(),
-            new SubFolderGenerator( $addToVersionControlAction ),
+            new XslTransformTestCodeRenderer( new DomXslTransformer() ),
+            new SubFolderGenerator( new FileSystem(), $addToVersionControlAction ),
             $addToVersionControlAction
         );
 

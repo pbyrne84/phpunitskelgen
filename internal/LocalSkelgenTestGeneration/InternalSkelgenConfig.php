@@ -4,7 +4,7 @@ namespace LocalSkelgenTestGeneration;
 
 
 use JESkelgen\Calculator\OutputDetailsFactoryParameters;
-use Skelgen\File\TestFilePathCalculator;
+use Skelgen\File\NameSpacedTestFilePathCalculator;
 use Skelgen\Project\GenericProjectConfig;
 use Skelgen\Config\SkelgenConfig;
 use Skelgen\File\ExistingDirectory;
@@ -77,7 +77,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
             new ExistingDirectory( $baseProjectFolder . '/test/' )
         );
 
-        $testFilePathCalculator = new TestFilePathCalculator( $outputDetailsFactoryParameters );
+        $testFilePathCalculator = new NameSpacedTestFilePathCalculator( $outputDetailsFactoryParameters );
 
         return $testFilePathCalculator->calculate( $classToTest );
     }

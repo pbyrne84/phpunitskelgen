@@ -12,17 +12,16 @@ class SubFolderGenerator {
     /** @var AddToVersionControlAction */
     private $addToVersionControlAction;
 
+    /** @var FileSystem */
+    private $fileSystem;
+
 
     /**
+     * @param FileSystem                $fileSystem
      * @param AddToVersionControlAction $addToVersionControlAction
      */
-    function __construct( AddToVersionControlAction $addToVersionControlAction = null ) {
-        if ( $addToVersionControlAction === null ) {
-            $this->addToVersionControlAction = new NullAddToVersionControlAction();
-
-            return;
-        }
-
+    function __construct( FileSystem $fileSystem, AddToVersionControlAction $addToVersionControlAction ) {
+        $this->fileSystem                = $fileSystem;
         $this->addToVersionControlAction = $addToVersionControlAction;
     }
 
@@ -34,17 +33,38 @@ class SubFolderGenerator {
      * @param string $testFilePath
      */
     public function generateRequiredSubFolders( $testFilePath ) {
+        $subFolderParts = $this->createSubFolderParts( $testFilePath );
+
+        $currentDir = '';
+        foreach ( $subFolderParts as $possibleNewSubFolder ) {
+            $currentDir .= $possibleNewSubFolder . '/';
+            if ( !$this->fileSystem->isDir( $currentDir ) ) {
+                $this->initialiseNewSubDirectory( $currentDir );
+            }
+        }
+    }
+
+
+    /**
+     * @param string $testFilePath
+     *
+     * @return array
+     */
+    private function createSubFolderParts( $testFilePath ) {
         $testFilePath = str_replace( '\\', '/', $testFilePath );
         $folderParts  = explode( '/', $testFilePath );
         unset( $folderParts[ count( $folderParts ) - 1 ] );
-        $currentDir = '';
-        foreach ( $folderParts as $folderPart ) {
-            $currentDir .= $folderPart . '/';
-            var_dump( $currentDir );
-            if ( !is_dir( $currentDir ) ) {
-                mkdir( $currentDir );
-                $this->addToVersionControlAction->addFolderToVersionControl( new ExistingDirectory( $currentDir ) );
-            }
-        }
+
+        return $folderParts;
+    }
+
+
+    /**
+     * @param string $currentDir
+     */
+    private function initialiseNewSubDirectory( $currentDir ) {
+        $this->fileSystem->mkDir( $currentDir );
+        $createdDirectory = $this->fileSystem->getDirectory( $currentDir );
+        $this->addToVersionControlAction->addFolderToVersionControl( $createdDirectory );
     }
 }

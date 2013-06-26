@@ -2,8 +2,9 @@
 namespace LocalSkelgenTestGeneration;
 
 use Skelgen\File\ExistingDirectory;
+use Skelgen\Project\BasePathCalculator;
 
-class InternalBasePathCalculator implements \Skelgen\Project\BasePathCalculator {
+class InternalBasePathCalculator implements BasePathCalculator {
     const CLASS_NAME = __CLASS__;
 
     private $regex;

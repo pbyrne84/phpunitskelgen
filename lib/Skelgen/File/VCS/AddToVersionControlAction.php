@@ -12,6 +12,11 @@ use Skelgen\File\ExistingDirectory;
  * There is a Null implementation of this to reduce null checks and to disable this functionality.
  */
 interface AddToVersionControlAction {
+    /**
+     * Interfaces, unlike classes in inheritance have to have unique class constant names. :class in 5.5 should
+     * solve this.
+     * */
+    const INTERFACE_NAME_AddToVersionControlAction = __CLASS__;
 
     /**
      * @param ExistingDirectory $directory

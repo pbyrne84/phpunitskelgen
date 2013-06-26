@@ -4,6 +4,9 @@ namespace Skelgen;
 
 use PHPUnit_Framework_TestCase;
 
+require_once 'Phockito_Globals.php';
+require_once 'hamcrest-php/hamcrest/Hamcrest.php';
+
 abstract class InternalBaseTestCase extends PHPUnit_Framework_TestCase {
     const CLASS_NAME = __CLASS__;
 

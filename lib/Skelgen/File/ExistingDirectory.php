@@ -13,7 +13,7 @@ class ExistingDirectory extends \SplFileInfo implements VerifiedFileSystemResour
 
 
     public function __construct( $fileName ) {
-        parent::__construct( $this->assertDirectoryExists( $fileName ) );
+        parent::__construct( $this->attemptRealPath( $fileName ) );
     }
 
 
@@ -22,18 +22,12 @@ class ExistingDirectory extends \SplFileInfo implements VerifiedFileSystemResour
      * @return string  - returns the file if it does exist
      * @throws DirectoryNotFoundException if not found
      */
-    private function assertDirectoryExists( $fileName ) {
+    private function attemptRealPath( $fileName ) {
         if( !is_dir( $fileName )) {
             throw new DirectoryNotFoundException( $fileName );
         }
 
-        return $fileName;
+        return realpath( $fileName );
     }
-
-
-    public function __toString() {
-        return $this->getRealPath();
-    }
-
 
 }

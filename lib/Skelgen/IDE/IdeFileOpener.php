@@ -12,6 +12,8 @@ namespace Skelgen\IDE;
  */
 interface IdeFileOpener {
 
+    const INTERFACE_IdeFileOpener = __CLASS__;
+
 
     /**
      * @param \SplFileInfo $filePath
