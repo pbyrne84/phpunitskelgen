@@ -79,6 +79,7 @@ and it is used to handle project paths that vary between different machines so o
 2. InternalSkelgenBoot - discussed above
 
 3. InternalSklgeenConfig - implementation of SkelgenConfig that is used for internal generation, usually one of these is configured for each project.
+
 ```php
 
 class InternalSkelgenConfig implements SkelgenConfig {
