@@ -23,7 +23,7 @@ class InternalBasePathCalculator implements BasePathCalculator {
      * @return \Skelgen\File\ExistingDirectory - basePath
      */
     public function calculateBasePath( \Skelgen\File\VerifiedFileSystemResource $classFilePath ) {
-        $absolutePath = str_replace( '\\', '/', $classFilePath->getRealPath() );
+        $absolutePath = $classFilePath->getNormalisedRealPath();
         if ( !preg_match( $this->regex, $absolutePath, $matches ) ) {
             throw new \RuntimeException( "cannot calculate base path using '" . $this->regex . "' in " . $absolutePath );
         }

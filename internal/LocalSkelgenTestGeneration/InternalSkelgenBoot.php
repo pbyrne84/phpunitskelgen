@@ -4,7 +4,7 @@ namespace LocalSkelgenTestGeneration;
 use RuntimeException;
 use Skelgen\Environment\InitialisationArgumentReader;
 
-class SkelgenBoot {
+class InternalSkelgenBoot {
     const CLASS_NAME = __CLASS__;
 
 

@@ -30,4 +30,12 @@ class ExistingFile extends \SplFileInfo implements VerifiedFileSystemResource {
 
         return realpath( $fileName );
     }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getNormalisedRealPath() {
+        return str_replace( '\\', '/', $this->getRealPath() );
+    }
 }

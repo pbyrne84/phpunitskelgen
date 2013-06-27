@@ -2,8 +2,6 @@
 
 namespace LocalSkelgenTestGeneration;
 
-
-use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 use Skelgen\File\NameSpacedTestFilePathCalculator;
 use Skelgen\Project\GenericProjectConfig;
 use Skelgen\Config\SkelgenConfig;
@@ -22,17 +20,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
      * @inheritdoc
      */
     public function isProject( VerifiedFileSystemResource $verifiedFileSystemResource ) {
-        return false !== strpos( $this->normalisePath( $verifiedFileSystemResource ), '/phpunitskelgen/' );
-    }
-
-
-    /**
-     * @param VerifiedFileSystemResource $verifiedFileSystemResource
-     *
-     * @return string
-     */
-    private function normalisePath( VerifiedFileSystemResource $verifiedFileSystemResource ) {
-        return str_replace( '\\', '/', $verifiedFileSystemResource );
+        return preg_match( self::PROJECT_REGEX, $verifiedFileSystemResource->getNormalisedRealPath() );
     }
 
 
@@ -47,7 +35,7 @@ class InternalSkelgenConfig implements SkelgenConfig {
             self::PROJECT_REGEX
         );
 
-        $projectConfig->setCustomRuleMatchers( $this->getCustomRuleMatchers( $projectConfig ) );
+        $projectConfig->setTestConfigRenderers( $this->getTestConfigRenderers( $projectConfig ) );
 
         return $projectConfig;
     }
@@ -71,13 +59,8 @@ class InternalSkelgenConfig implements SkelgenConfig {
                 ->getBaseFolder( new ExistingFile( $classToTest->getFileName() ) )
                 ->getRealPath();
 
-        $outputDetailsFactoryParameters = new OutputDetailsFactoryParameters(
-            $classToTest,
-            new ExistingDirectory( $baseProjectFolder ),
-            new ExistingDirectory( $baseProjectFolder . '/test/' )
-        );
-
-        $testFilePathCalculator = new NameSpacedTestFilePathCalculator( $outputDetailsFactoryParameters );
+        $baseTestPath           = new ExistingDirectory( $baseProjectFolder . '/test/' );
+        $testFilePathCalculator = new NameSpacedTestFilePathCalculator( $baseTestPath );
 
         return $testFilePathCalculator->calculate( $classToTest );
     }
@@ -89,28 +72,20 @@ class InternalSkelgenConfig implements SkelgenConfig {
      * @return \Skelgen\File\ExistingDirectory
      */
     private function getBaseFolder( VerifiedFileSystemResource $testFileLocation ) {
-        return $this
-                ->createBasePathCalculator()
-                ->calculateBasePath( $testFileLocation );
+        $internalBasePathCalculator = new InternalBasePathCalculator( self::PROJECT_REGEX );
+
+        return $internalBasePathCalculator->calculateBasePath( $testFileLocation );
     }
 
 
     /**
-     * @return \Skelgen\Project\BasePathCalculator
-     */
-    private function createBasePathCalculator() {
-        return new InternalBasePathCalculator( self::PROJECT_REGEX );
-    }
-
-
-    /**
-     * @param \Skelgen\Project\GenericProjectConfig $config
+     * @param \Skelgen\Project\GenericProjectConfig $projectConfig
      *
      * @return array|\Skelgen\Test\TestConfigRenderer[]
      */
-    private function getCustomRuleMatchers( GenericProjectConfig $config ) {
+    private function getTestConfigRenderers( GenericProjectConfig $projectConfig ) {
         return array(
-            new InternalTestConfigRenderer( $config )
+            new InternalTestConfigRenderer( $projectConfig )
         );
     }
 

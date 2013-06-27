@@ -48,6 +48,7 @@ class ExistingFileTest extends InternalBaseTestCase {
             $existingFile . '',
             'Casting to string gives realpath'
         );
+
     }
 
 }

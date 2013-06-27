@@ -90,7 +90,7 @@ class TestCaseWriter {
     private function locateRelevantTestConfig( ProjectConfig $projectConfig,
                                                CustomReflectionClass $customReflectionClass ) {
         $testConfig = null;
-        foreach ( $projectConfig->getCustomRuleMatchers() as $testConfigRenderer ) {
+        foreach ( $projectConfig->getTestConfigRenderers() as $testConfigRenderer ) {
             $testConfig = $testConfigRenderer->calculateConfig( $customReflectionClass );
             if ( $testConfig ) {
                 return $testConfig;

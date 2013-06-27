@@ -27,7 +27,7 @@ interface ProjectConfig {
     /**
      * @return array|TestConfigRenderer[]
      */
-    public function getCustomRuleMatchers();
+    public function getTestConfigRenderers();
 
 
     /**

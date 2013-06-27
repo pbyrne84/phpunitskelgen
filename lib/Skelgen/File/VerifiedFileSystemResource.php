@@ -13,7 +13,9 @@ namespace Skelgen\File;
 interface VerifiedFileSystemResource {
 
     /**
+     * Always returns a forward slashed variant of realpath for cross os comparative reasons
+     *
      * @return string
      */
-    public function getRealPath();
+    public function getNormalisedRealPath();
 }

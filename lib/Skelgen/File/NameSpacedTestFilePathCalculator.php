@@ -1,6 +1,5 @@
 <?php
 namespace Skelgen\File;
-use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 
 /**
  * Class NameSpacedTestFilePathCalculator
@@ -10,15 +9,15 @@ use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 class NameSpacedTestFilePathCalculator implements TestFilePathCalculator {
     const CLASS_NAME = __CLASS__;
 
-    /** @var \JESkelgen\Calculator\OutputDetailsFactoryParameters */
-    private $outputDetailsFactoryParameters;
+    /** @var ExistingDirectory */
+    private $testBasePath;
 
 
     /**
-     * @param OutputDetailsFactoryParameters $outputDetailsFactoryParameters
+     * @param ExistingDirectory $testBasePath
      */
-    function __construct( OutputDetailsFactoryParameters $outputDetailsFactoryParameters ) {
-        $this->outputDetailsFactoryParameters = $outputDetailsFactoryParameters;
+    function __construct( ExistingDirectory $testBasePath ) {
+        $this->testBasePath = $testBasePath;
     }
 
 
@@ -29,8 +28,7 @@ class NameSpacedTestFilePathCalculator implements TestFilePathCalculator {
      */
     public function calculate( \ReflectionClass $reflectionClass ) {
         return $this->normaliseDirectorySeparators(
-            $this->outputDetailsFactoryParameters->getBaseTestPath()
-            . '/' . $reflectionClass->getName() . 'Test.php'
+            $this->testBasePath->getNormalisedRealPath() . '/' . $reflectionClass->getName() . 'Test.php'
         );
     }
 

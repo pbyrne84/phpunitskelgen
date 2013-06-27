@@ -21,7 +21,7 @@ class GenericProjectConfig implements ProjectConfig {
     /**
      * @var array|TestConfigRenderer[]
      */
-    private $customMatchers;
+    private $testConfigRenderers;
 
     /**
      * @var string
@@ -55,10 +55,10 @@ class GenericProjectConfig implements ProjectConfig {
 
 
     /**
-     * @param array|TestConfigRenderer[] $matchers
+     * @param array|TestConfigRenderer[] $testConfigRenderers
      */
-    public function setCustomRuleMatchers( array $matchers ) {
-        $this->customMatchers = $matchers;
+    public function setTestConfigRenderers( array $testConfigRenderers ) {
+        $this->testConfigRenderers = $testConfigRenderers;
     }
 
 
@@ -81,8 +81,8 @@ class GenericProjectConfig implements ProjectConfig {
     /**
      * @return array|TestConfigRenderer[]
      */
-    public function getCustomRuleMatchers() {
-        return $this->customMatchers;
+    public function getTestConfigRenderers() {
+        return $this->testConfigRenderers;
     }
 
 
