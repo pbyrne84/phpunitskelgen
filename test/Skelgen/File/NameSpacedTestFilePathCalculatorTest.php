@@ -1,24 +1,23 @@
 <?php
 namespace Skelgen\File;
 
-use JESkelgen\Calculator\OutputDetailsFactoryParameters;
 use Skelgen\InternalBaseTestCase;
 
 class NameSpacedTestFilePathCalculatorTest extends InternalBaseTestCase {
 
     const CLASS_NAME = __CLASS__;
 
-    /** @var OutputDetailsFactoryParameters */
-    private $outputDetailsFactoryParameters;
+    /** @var ExistingDirectory */
+    private $testBaseDir;
 
     /** @var NameSpacedTestFilePathCalculator */
     private $nameSpacedTestFilePathCalculator;
 
 
     protected function setUp() {
-        $this->outputDetailsFactoryParameters   = \mock( OutputDetailsFactoryParameters::CLASS_NAME );
+        $this->testBaseDir   = \mock( ExistingDirectory::CLASS_NAME );
         $this->nameSpacedTestFilePathCalculator = new NameSpacedTestFilePathCalculator(
-            $this->outputDetailsFactoryParameters
+            $this->testBaseDir
         );
     }
 
@@ -26,7 +25,8 @@ class NameSpacedTestFilePathCalculatorTest extends InternalBaseTestCase {
     public function test_calculate() {
         $testBasePath = '/the/path/that/is/the/root/of/the/tests';
 
-        when( $this->outputDetailsFactoryParameters->getBaseTestPath() )
+
+        when( $this->testBaseDir->getNormalisedRealPath() )
                 ->thenReturn( $testBasePath );
 
         $classToCreateTestFor = new \ReflectionClass( NameSpacedTestFilePathCalculator::CLASS_NAME );
