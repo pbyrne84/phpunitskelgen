@@ -36,8 +36,9 @@ Tool: "path to skelgen/phpstorm-phpunit-skelgen-mask.php" "$FilePath$"
 ## Internal boot loading
 ```php
 
-//The boot loader is in a class purely because this is a branched action so I can use one external tool to manage this project which is totally seperate from other
-//projects wihout polluting the global address space.
+//The boot loader is in a class purely because this is a branched action so I can use one external
+//tool to manage this project which is totally seperate from other projects wihout polluting the
+//global address space.
 class SkelgenBoot {
     const CLASS_NAME = __CLASS__;
 
@@ -56,7 +57,8 @@ class SkelgenBoot {
             throw new RuntimeException( "'" . $initialisationConfig->getSourceFile() . '" cannot be mapped to skelgen config' );
         }
 
-        #Run your project autoloader with include path setup etc, should append to any current include path setup and autoloader
+        //Run your project autoloader with include path setup etc, should append to any current
+        //include path setup and autoloader
         if ( $skelgenConfig->hasAutoLoader() ) {
             require_once $skelgenConfig->getAutoLoaderPath( $initialisationConfig->getSourceFile() );
         }
@@ -84,8 +86,8 @@ and it is used to handle project paths that vary between different machines so o
 
 class InternalSkelgenConfig implements SkelgenConfig {
 
-    //This is just auto generated in the code template I use for everything class to allow when creating mocks to use imports and have safe refactoring.
-    //Behaves the same as ::class in 5.5
+    //This is just auto generated in the code template I use for everything class to allow when
+    //creating mocks to use imports and have safe refactoring. Behaves the same as ::class in 5.5
     const CLASS_NAME = __CLASS__;
 
     //Regex to calculate base project path.
@@ -93,7 +95,8 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * Uses the above regex to verify if this is the correct one when spinnnig through possibly configurations in a loop
+     * Uses the above regex to verify if this is the correct one when spinnnig through possible
+     * configurations in a loop.
      * @inheritdoc
      */
     public function isProject( VerifiedFileSystemResource $verifiedFileSystemResource ) {
@@ -104,11 +107,13 @@ class InternalSkelgenConfig implements SkelgenConfig {
     /**
      * Top level method that does all the calculation needed to generate the test class :-#
      * 1. Sets project name for any future reference/debugging
-     * 2. Calculates the absolute test file output path, this implementation assumes namespacing and Test.php suffixing
-     * 3. Verifies the test class is locatable on the file system and creates the base path using the InternalBasePathCalculator
+     * 2. Calculates the absolute test file output path, this implementation assumes namespacing
+     *    and Test.php suffixing
+     * 3. Verifies the test class is locatable on the file system and creates the base path using
+     *    the InternalBasePathCalculator
      * 4. Sets the project regex for any further calculations.
-     * 5. Sets the possible TestConfigRenders for the project, each renderer can handle grouping of possible templates and are usually matched
-     * via inheritance analysys.
+     * 5. Sets the possible TestConfigRenders for the project, each renderer can handle grouping
+     *    of possible templates and are usually matched via inheritance analysys.
      *
      * @inheritdoc
      */
@@ -135,9 +140,9 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * This implementation assumes there is a test folder in the root of the project where the test classes will start
-     * from. The complexity from this really comes down to the organisation of a project and whether multiple test roots
-     * are involved.
+     * This implementation assumes there is a test folder in the root of the project where the
+     * test classes will start from. The complexity from this really comes down to the
+     * organisation of a project and whether multiple test roots are involved.
      *
      * @param \ReflectionClass $classToTest
      *
@@ -168,9 +173,9 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * Returns the list of TestConfigRenderes applicable to a project. In this case as this project is isolated there is
-     * only one but usually in the list would a render/s that handle shareable config rendering such as configurations for
-     * framework controllers etc.
+     * Returns the list of TestConfigRenderes applicable to a project. In this case as this project
+     * is isolated there is only one but usually in the list would a render/s that handle shareable
+     * config rendering such as configurations for framework controllers etc.
      *
      * @param \Skelgen\Project\GenericProjectConfig $projectConfig
      *
@@ -184,9 +189,11 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * No autoloader path requried to for this but usually calculation would be implemented to include the projects autoloader
-     * /include path setup. All include paths for autloading the skelgen classes are determined and set as absolute starting points
-     * so they are safe from any current working dir manipulations that may be required to get your own autoloaders working.
+     * No autoloader path requried to for this but usually calculation would be implemented to
+     * include the projects autoloader /include path setup. All include paths for autloading the
+     * skelgen classes are determined and set as absolute starting points so they are safe from
+     * any current working dir manipulations that may be required to get your own autoloaders
+     * working.
      *
      * @inheritdoc
      */
@@ -196,7 +203,8 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * The autoloader is always included for this project whenever the sckelgen is run in the external command setup
+     * The autoloader is always included for this project whenever the sckelgen is run in the
+     * external command setup
      * @inheritdoc
      */
     public function hasAutoLoader() {
