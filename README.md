@@ -266,11 +266,11 @@ class InternalTestConfigRenderer implements TestConfigRenderer {
 ```
 
 5. InternalSkelgenRunner is just a wrapper build method. This comprises of :-
-+ Create all subfolders in a the chain.
-+ Is going to add to git automatically, there is a Null implementation for No version control action
-+ Is going to open in PhpStorm at the end, this can be replaced with any implmentation matching
+* Create all subfolders in a the chain.
+* Is going to add to git automatically, there is a Null implementation for No version control action
+* Is going to open in PhpStorm at the end, this can be replaced with any implmentation matching
 the interface( this one just calls the executable with the file path appended )
-+ Convert the TestConfig to xml then transform.
+* Convert the TestConfig to xml then transform.
 
 
 ```php
