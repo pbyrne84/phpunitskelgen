@@ -21,7 +21,7 @@ very nicely but they removed the PHP skelgen feature for a java only one.
 5. Internal templating method uses XSLT but this can be overriden and all it is doing is rendered a list of calculated
 
 6. Custom base test case on the inheritance of the class to be tested is also very easy to implement as it all relies on
-two levels of chaining.
+two levels of chaining :-
   * Matching to a project
   * Matching to a base test case for that project
 
