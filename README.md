@@ -1,4 +1,4 @@
-# phpunitskelgen - a skeleton generator for generating unit tests.
+# phpunitskelgen - a skeleton generator for generating unit tests via reflection( not just PHPUnit ).
 One of the main issues with TDD is the manual effort that must be repeated at the start of each new test case. This in
 turn can lead to classes growing large due to the hassle of create a new test case when sprouting a class. This makes it almost as easy to create
 a new class for new functionality than it to try and lump it into another class( Inline Class is quite a rare refactoring as class tend to always
