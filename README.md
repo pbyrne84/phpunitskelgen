@@ -22,8 +22,8 @@ very nicely but they removed the PHP skelgen feature for a java only one.
 
 6. Custom base test case on the inheritance of the class to be tested is also very easy to implement as it all relies on
 two levels of chaining.
-+ Matching to a project
-+ Matching to a base test case for that project
+  * Matching to a project
+  * Matching to a base test case for that project
 
 The amount of work required depends on the organisation differential in the projects this is applied to.
 
