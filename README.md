@@ -13,7 +13,7 @@ code construction etc. can be overriden
 2. Analyses constructor parameters to generate mocks from.
 
 3. Current internal configuration relies on Phockito/PhpUnit for mocking but this can be ovveriden for any test framework/mocking framework. Originally this
-was used internally but refactored out to make generic and generated PhpUnit mocks.
+was used internally for PHPUnit mocks but refactored out to make generic.
 
 4. External tool configuration is farely generic but the implemented mask to calculate class name is namespaced specific. This did use to hook in to PhpStorm
 very nicely but they removed the PHP skelgen feature for a java only one.
@@ -83,7 +83,6 @@ and it is used to handle project paths that vary between different machines so o
 3. InternalSklgeenConfig - implementation of SkelgenConfig that is used for internal generation, usually one of these is configured for each project.
 
 ```php
-
 class InternalSkelgenConfig implements SkelgenConfig {
 
     //This is just auto generated in the code template I use for everything class to allow when
@@ -203,8 +202,9 @@ class InternalSkelgenConfig implements SkelgenConfig {
 
 
     /**
-     * The autoloader is always included for this project whenever the sckelgen is run in the
-     * external command setup
+     * The autoloader is always included for this project whenever the skelgen is run in the
+     * external command so returns false here as it is used to signify an additional autoloader.
+     *
      * @inheritdoc
      */
     public function hasAutoLoader() {
@@ -212,4 +212,91 @@ class InternalSkelgenConfig implements SkelgenConfig {
     }
 }
 
+```
+
+4. InternalTestConfigRenderer is an implementation of chainable TestConfigRenderer. The
+calculateConfig usually will iterate through the parent classes and attempt to do matching on
+them to to find an appropriate base test case. As there is only one test case for this project
+it always returns StandardTestTemplate.xsl.
+
+```php
+class InternalTestConfigRenderer implements TestConfigRenderer {
+    const CLASS_NAME = __CLASS__;
+
+    /** @var ProjectConfig */
+    private $projectConfig;
+
+
+    function __construct( ProjectConfig $projectConfig ) {
+        $this->projectConfig = $projectConfig;
+    }
+
+
+    /**
+     * @param CustomReflectionClass $reflectionClass
+     *
+     * @return TestConfig|null
+     */
+    public function calculateConfig( CustomReflectionClass $reflectionClass ) {
+        $testConfig = TestConfig::createFromReflectionClass(
+            new ExistingFile( __DIR__ . '/template/StandardTestTemplate.xsl' ),
+            $this->projectConfig->getTestOutputFilePath(),
+            $reflectionClass
+        );
+
+        return $this->appendPublicReflectedMethods( $testConfig, $reflectionClass );
+    }
+
+
+    /**
+     * The public methods are generated in the xml but are ignored in the current xsl.
+     *
+     * @param \Skelgen\Test\TestConfig $testConfig
+     * @param \ReflectionClass         $reflectionClass
+     *
+     * @return \Skelgen\Test\TestConfig
+     */
+    private function appendPublicReflectedMethods( TestConfig $testConfig, \ReflectionClass $reflectionClass ) {
+        $reflectionMethods = $reflectionClass->getMethods( \ReflectionMethod::IS_PUBLIC );
+        $testConfig->addReflectionMethods( $reflectionMethods );
+
+        return $testConfig;
+    }
+}
+```
+
+5. InternalSkelgenRunner is just a wrapper build method. This comprises of :-
+a:) Create all subfolders in a the chain.
+b:) Is going to add to git automatically, there is a Null implementation for No version control action
+c:) Is going to open in PhpStorm at the end, this can be replaced with any implmentation matching
+the interface( this one just calls the executable with the file path appended )
+d:) Convert the TestConfig to xml then transform.
+
+
+```php
+ class InternalSkelgenRunner {
+     const CLASS_NAME = __CLASS__;
+
+
+     /**
+      * @param InitialisationConfig $initialisationConfig
+      * @param \Skelgen\Config\SkelgenConfig        $skelgenConfig
+      */
+     public function runSkelgen( InitialisationConfig $initialisationConfig, SkelgenConfig $skelgenConfig ){
+         $customReflectionClass     = new CustomReflectionClass( $initialisationConfig->getClassName() );
+         $addToVersionControlAction = new GitAddToVersionControlAction();
+         $testCaseWriter            = new TestCaseWriter(
+             //Opens test in PhpStorm after completion
+             new PhpStormFileOpener(),
+             //Converts the created TestConfig into xml then transforms it using xsl, in theory any transformation
+              process and be used.
+             new XslTransformTestCodeRenderer( new DomXslTransformer() ),
+             new SubFolderGenerator( new FileSystem(), $addToVersionControlAction ),
+             $addToVersionControlAction
+         );
+
+         $projectConfig = $skelgenConfig->createProjectConfig( $customReflectionClass );
+         $testCaseWriter->writeTestCase( $projectConfig, $customReflectionClass );
+     }
+ }
 ```

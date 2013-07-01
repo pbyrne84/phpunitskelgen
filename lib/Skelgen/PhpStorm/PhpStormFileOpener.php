@@ -21,9 +21,8 @@ class PhpStormFileOpener implements IdeFileOpener{
             throw new \InvalidArgumentException( $filePath->getPathname() . ' is not a valid file');
         }
 
-        $execCommand = 'PhpStorm.exe "' . $filePath->getPathname() . '"';
+        $execCommand = 'PhpStorm "' . $filePath->getPathname() . '"';
         echo "Running $execCommand \n";
         exec( $execCommand, $output );
-        var_dump( $output );
     }
 }
