@@ -278,11 +278,11 @@ class InternalTestConfigRenderer implements TestConfigRenderer {
      const CLASS_NAME = __CLASS__;
 
 
-     /**
-      * @param InitialisationConfig $initialisationConfig
-      * @param \Skelgen\Config\SkelgenConfig        $skelgenConfig
-      */
-     public function runSkelgen( InitialisationConfig $initialisationConfig, SkelgenConfig $skelgenConfig ){
+    /**
+     * @param InitialisationConfig          $initialisationConfig
+     * @param \Skelgen\Config\SkelgenConfig $skelgenConfig
+     */
+    public function runSkelgen( InitialisationConfig $initialisationConfig, SkelgenConfig $skelgenConfig ) {
          $customReflectionClass     = new CustomReflectionClass( $initialisationConfig->getClassName() );
          $addToVersionControlAction = new GitAddToVersionControlAction();
          $testCaseWriter            = new TestCaseWriter(
