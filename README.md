@@ -22,8 +22,8 @@ very nicely but they removed the PHP skelgen feature for a java only one.
 
 6. Custom base test case on the inheritance of the class to be tested is also very easy to implement as it all relies on
 two levels of chaining.
-a:) Matching to a project
-b:) Matching to a base test case for that project
++ Matching to a project
++ Matching to a base test case for that project
 
 The amount of work required depends on the organisation differential in the projects this is applied to.
 
@@ -266,14 +266,11 @@ class InternalTestConfigRenderer implements TestConfigRenderer {
 ```
 
 5. InternalSkelgenRunner is just a wrapper build method. This comprises of :-
-a:) Create all subfolders in a the chain.
-
-b:) Is going to add to git automatically, there is a Null implementation for No version control action
-
-c:) Is going to open in PhpStorm at the end, this can be replaced with any implmentation matching
++ Create all subfolders in a the chain.
++ Is going to add to git automatically, there is a Null implementation for No version control action
++ Is going to open in PhpStorm at the end, this can be replaced with any implmentation matching
 the interface( this one just calls the executable with the file path appended )
-
-d:) Convert the TestConfig to xml then transform.
++ Convert the TestConfig to xml then transform.
 
 
 ```php
