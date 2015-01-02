@@ -21,8 +21,8 @@ class SkelgenAutoload {
      */
     private function addAutloaderPath( $jeSkelgenPath ) {
         set_include_path(
-            get_include_path() . PATH_SEPARATOR .
-            $jeSkelgenPath
+                get_include_path() . PATH_SEPARATOR .
+                $jeSkelgenPath
         );
     }
 
@@ -44,7 +44,7 @@ class SkelgenAutoload {
                 return;
             }
 
-            $classFileName = $className . '.php';
+            $classFileName = str_replace( '\\' , '/', $className ). '.php';
 
             $autoLoadErrorHandler = function() use ($classFileName){
                 $message = "Could not find $classFileName, tried \n" ;
